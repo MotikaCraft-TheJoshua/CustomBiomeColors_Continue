@@ -21,29 +21,30 @@ public class WorldEditHandler {
     @NotNull
     public Block[] getSelectedBlocks(String authorsName) {
         LocalSession worldEditSession = worldEdit.getSessionManager().findByName(authorsName);
-        if(worldEditSession != null) {
-            if(worldEditSession.getSelectionWorld() != null) {
-                RegionSelector regionSelector = worldEditSession.getRegionSelector(worldEditSession.getSelectionWorld());
-                if(regionSelector.isDefined()) {
-                    try {
-                        Region region = regionSelector.getRegion();
-                        World world = Bukkit.getWorld(Objects.requireNonNull(region.getWorld()).getName());
-                        Block[] blocks = new Block[(int) region.getVolume()];
+        if (worldEditSession == null) {
+            return new Block[0];
+        }
+        if (worldEditSession.getSelectionWorld() == null) {
+            return new Block[0];
+        }
+        RegionSelector regionSelector = worldEditSession.getRegionSelector(worldEditSession.getSelectionWorld());
+        if (regionSelector.isDefined()) {
+            try {
+                Region region = regionSelector.getRegion();
+                World world = Bukkit.getWorld(Objects.requireNonNull(region.getWorld()).getName());
+                Block[] blocks = new Block[(int) region.getVolume()];
 
-                        int i = 0;
-                        for(BlockVector3 blockVector3 : region) {
-                            blocks[i] = new Location(world, blockVector3.getX(), blockVector3.getY(), blockVector3.getZ()).getBlock();
-                            i++;
-                        }
-
-                        return blocks;
-                    } catch (IncompleteRegionException e) {
-                        e.printStackTrace();
-                    }
+                int i = 0;
+                for (BlockVector3 blockVector3 : region) {
+                    blocks[i] = new Location(world, blockVector3.x(), blockVector3.y(), blockVector3.z()).getBlock();
+                    i++;
                 }
+
+                return blocks;
+            } catch (IncompleteRegionException e) {
+                e.printStackTrace();
             }
         }
         return new Block[0];
     }
-
 }

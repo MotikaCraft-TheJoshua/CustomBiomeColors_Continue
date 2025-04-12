@@ -20,10 +20,7 @@ public class Updater implements Listener {
     public boolean update;
     private final String currentVersion;
     private final int pluginId;
-
     private final String message;
-
-
 
     public Updater(JavaPlugin plugin, int pluginId) {
         Bukkit.getPluginManager().registerEvents(this, plugin);

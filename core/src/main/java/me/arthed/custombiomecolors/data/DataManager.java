@@ -35,7 +35,8 @@ public class DataManager {
         }
 
         try {
-            Type typeToken = new TypeToken<Map<String, int[]>>() {}.getType();
+            Type typeToken = new TypeToken<Map<String, int[]>>() {
+            }.getType();
             this.map = gson.fromJson(new FileReader(this.file), typeToken);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -49,26 +50,26 @@ public class DataManager {
     }
 
     public void saveBiome(BiomeKey biomeKey, BiomeColors biomeColors) {
-        this.map.put(biomeKey.key + ":" + biomeKey.value, new int[] {
-                biomeColors.getGrassColor(),
-                biomeColors.getFoliageColor(),
-                biomeColors.getWaterColor(),
-                biomeColors.getWaterFogColor(),
-                biomeColors.getSkyColor(),
-                biomeColors.getFogColor()
+        this.map.put(biomeKey.key + ":" + biomeKey.value, new int[]{
+            biomeColors.getGrassColor(),
+            biomeColors.getFoliageColor(),
+            biomeColors.getWaterColor(),
+            biomeColors.getWaterFogColor(),
+            biomeColors.getSkyColor(),
+            biomeColors.getFogColor()
         });
     }
 
     @Nullable
     public NmsBiome getBiomeWithSpecificColors(BiomeColors biomeColors) {
-        for(String biomeKeyString : this.map.keySet()) {
+        for (String biomeKeyString : this.map.keySet()) {
             int[] colors = map.get(biomeKeyString);
-            if(colors[0] == biomeColors.getGrassColor() &&
-                    colors[1] == biomeColors.getFoliageColor() &&
-                    colors[2] == biomeColors.getWaterColor() &&
-                    colors[3] == biomeColors.getWaterFogColor() &&
-                    colors[4] == biomeColors.getSkyColor() &&
-                    colors[5] == biomeColors.getFogColor()) {
+            if (colors[0] == biomeColors.getGrassColor() &&
+                colors[1] == biomeColors.getFoliageColor() &&
+                colors[2] == biomeColors.getWaterColor() &&
+                colors[3] == biomeColors.getWaterFogColor() &&
+                colors[4] == biomeColors.getSkyColor() &&
+                colors[5] == biomeColors.getFogColor()) {
                 return plugin.getNmsServer().getBiomeFromBiomeKey(new BiomeKey(biomeKeyString));
             }
         }
@@ -79,15 +80,14 @@ public class DataManager {
         for (String biomeKeyString : this.map.keySet()) {
             int[] colors = map.get(biomeKeyString);
             plugin.getNmsServer().loadBiome(
-                    new BiomeKey(biomeKeyString),
-                    new BiomeColors()
-                            .setGrassColor(colors[0])
-                            .setFoliageColor(colors[1])
-                            .setWaterColor(colors[2])
-                            .setWaterFogColor(colors[3])
-                            .setSkyColor(colors[4])
-                            .setFogColor(colors[5]));
+                new BiomeKey(biomeKeyString),
+                new BiomeColors()
+                    .setGrassColor(colors[0])
+                    .setFoliageColor(colors[1])
+                    .setWaterColor(colors[2])
+                    .setWaterFogColor(colors[3])
+                    .setSkyColor(colors[4])
+                    .setFogColor(colors[5]));
         }
     }
-
 }

@@ -1,6 +1,5 @@
 package me.arthed.custombiomecolors.utils;
 
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;

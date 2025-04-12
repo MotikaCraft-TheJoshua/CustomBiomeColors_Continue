@@ -19,28 +19,33 @@ import java.util.Objects;
 public final class CustomBiomeColors extends JavaPlugin {
 
     private static CustomBiomeColors instance;
+
     public static CustomBiomeColors getInstance() {
         return instance;
     }
 
     private NmsServer nmsServer;
+
     @NotNull
     public NmsServer getNmsServer() {
         return this.nmsServer;
     }
 
     private BiomeManager biomeManager;
+
     @NotNull
     public BiomeManager getBiomeManager() {
         return this.biomeManager;
     }
 
     private WorldEditHandler worldEditHandler;
+
     public WorldEditHandler getWorldEditHandler() {
         return this.worldEditHandler;
     }
 
     private DataManager dataManager;
+
     public DataManager getDataManager() {
         return this.dataManager;
     }
@@ -49,26 +54,9 @@ public final class CustomBiomeColors extends JavaPlugin {
     public void onLoad() {
         instance = this;
 
-        if(Bukkit.getVersion().contains("1.16")) {
-            this.nmsServer = new NmsServer_1_16();
-        } else if(Bukkit.getVersion().contains("1.17")) {
-            this.nmsServer = new NmsServer_1_17();
-        } else if(Bukkit.getVersion().contains("1.18")) {
-            this.nmsServer = new NmsServer_1_18();
-        } else if(Bukkit.getVersion().contains("1.19")) {
-            this.nmsServer = new NmsServer_1_19();
-        } else if(Bukkit.getVersion().contains("1.20.1")) {
-            this.nmsServer = new NmsServer_1_20();
-        } else if(Bukkit.getVersion().contains("1.20.2")) {
-            this.nmsServer = new NmsServer_1_20_2();
-        } else {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&c&l[CustomBiomeColors] This plugin works only on 1.16 and higher versions."));
-            Bukkit.getPluginManager().disablePlugin(this);
-        }
-
+        this.nmsServer = new NmsServer();
         this.dataManager = new DataManager("data.json");
         this.dataManager.loadBiomes();
-
     }
 
     @Override
@@ -94,7 +82,7 @@ public final class CustomBiomeColors extends JavaPlugin {
     public void onDisable() {
         try {
             this.dataManager.save();
-        } catch (IOException ignore) {}
+        } catch (IOException ignore) {
+        }
     }
-
 }

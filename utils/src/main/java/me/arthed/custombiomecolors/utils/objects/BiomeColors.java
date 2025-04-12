@@ -40,17 +40,17 @@ public class BiomeColors {
     }
 
     public void setColor(BiomeColorType colorType, int color) {
-        if(colorType.equals(BiomeColorType.GRASS)) {
+        if (colorType.equals(BiomeColorType.GRASS)) {
             this.setGrassColor(color);
-        } else if(colorType.equals(BiomeColorType.FOLIAGE)) {
+        } else if (colorType.equals(BiomeColorType.FOLIAGE)) {
             this.setFoliageColor(color);
-        } else if(colorType.equals(BiomeColorType.WATER)) {
+        } else if (colorType.equals(BiomeColorType.WATER)) {
             this.setWaterColor(color);
-        } else if(colorType.equals(BiomeColorType.WATER_FOG)) {
+        } else if (colorType.equals(BiomeColorType.WATER_FOG)) {
             this.setWaterFogColor(color);
-        } else if(colorType.equals(BiomeColorType.SKY)) {
+        } else if (colorType.equals(BiomeColorType.SKY)) {
             this.setSkyColor(color);
-        } else if(colorType.equals(BiomeColorType.FOG)) {
+        } else if (colorType.equals(BiomeColorType.FOG)) {
             this.setFogColor(color);
         }
     }
@@ -78,5 +78,4 @@ public class BiomeColors {
     public int getFogColor() {
         return fogColor;
     }
-
 }

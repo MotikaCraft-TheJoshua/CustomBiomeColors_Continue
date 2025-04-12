@@ -20,5 +20,4 @@ public class BiomeKey {
     public String toString() {
         return key + ":" + value;
     }
-
 }
