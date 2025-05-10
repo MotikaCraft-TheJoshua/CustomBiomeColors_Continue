@@ -21,7 +21,8 @@ public class NmsServer {
     private final MappedRegistry<Biome> biomeRegistry = (MappedRegistry<Biome>) MinecraftServer.getServer().registryAccess().lookupOrThrow(Registries.BIOME);
 
     public NmsBiome getBiomeFromBiomeKey(BiomeKey biomeKey) {
-        return new NmsBiome(this.biomeRegistry.getValueOrThrow(ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(biomeKey.key, biomeKey.value))));
+        ResourceKey<Biome> key = ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(biomeKey.key, biomeKey.value));
+        return new NmsBiome(this.biomeRegistry.getOrThrow(key)); // Replaced getValueOrThrow with getOrThrow
     }
 
     public NmsBiome getBiomeFromBiomeBase(Object biomeBase) {
@@ -29,14 +30,13 @@ public class NmsServer {
     }
 
     public boolean doesBiomeExist(BiomeKey biomeKey) {
-        return this.biomeRegistry.getValue(ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(biomeKey.key, biomeKey.value))) != null;
+        ResourceKey<Biome> key = ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(biomeKey.key, biomeKey.value));
+        return this.biomeRegistry.get(key) != null; // Replaced getValue with get
     }
 
     public void loadBiome(BiomeKey biomeKey, BiomeColors biomeColors) {
-        Biome biomeBase = this.biomeRegistry.getValueOrThrow(ResourceKey.create(
-            Registries.BIOME,
-            ResourceLocation.fromNamespaceAndPath("minecraft", "plains")
-        ));
+        ResourceKey<Biome> plainsKey = ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("minecraft", "plains"));
+        Biome biomeBase = this.biomeRegistry.getOrThrow(plainsKey); // Replaced getValueOrThrow with getOrThrow
 
         ResourceKey<Biome> customBiomeKey = ResourceKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(biomeKey.key, biomeKey.value));
         Biome.BiomeBuilder customBiomeBuilder = new Biome.BiomeBuilder()
@@ -83,6 +83,7 @@ public class NmsServer {
 
     public void registerBiome(Object biomeBase, Object biomeMinecraftKey) {
         try {
+            // Verify field names in 1.21.1
             Field frozen = MappedRegistry.class.getDeclaredField("frozen");
             frozen.setAccessible(true);
             frozen.set(this.biomeRegistry, false);
@@ -91,18 +92,16 @@ public class NmsServer {
             unregisteredIntrusiveHolders.setAccessible(true);
             unregisteredIntrusiveHolders.set(this.biomeRegistry, new IdentityHashMap<>());
 
-            //biome is the BiomeBase that you're registering
-            //f is createIntrusiveHolder
             this.biomeRegistry.createIntrusiveHolder((Biome) biomeBase);
-            //a is RegistryMaterials.register
             this.biomeRegistry.register((ResourceKey<Biome>) biomeMinecraftKey, (Biome) biomeBase, RegistrationInfo.BUILT_IN);
 
-            //Make unregisteredIntrusiveHolders null again to remove potential for undefined behaviour
             unregisteredIntrusiveHolders.set(this.biomeRegistry, null);
-
             frozen.set(this.biomeRegistry, true);
-        } catch (Exception error) {
-            error.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            System.err.println("Field not found in MappedRegistry for 1.21.1: " + e.getMessage() + ". Possible fields: 'frozen', 'unregisteredIntrusiveHolders'.");
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
