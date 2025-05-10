@@ -50,5 +50,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: CustomBiomeColors-JAR
-        path: core/build/libs/CustomBiomeColors-1.3.0-MC-1.21.4.jar
+        path: core/build/libs/CustomBiomeColors-1.3.0-MC-1.21.1.jar
         retention-days: 7
