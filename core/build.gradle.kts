@@ -19,7 +19,7 @@ repositories {
 
 dependencies {
     implementation(project(":utils"))
-    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
     implementation(platform("com.intellectualsites.bom:bom-newest:1.52"))
     compileOnly("com.intellectualsites.plotsquared:plotsquared-core")
     compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core")
@@ -34,7 +34,7 @@ tasks {
         dependsOn(shadowJar)
     }
     shadowJar {
-        archiveFileName.set("CustomBiomeColors-${version}-MC-1.21.4.jar")
+        archiveFileName.set("CustomBiomeColors-${version}-MC-1.21.1.jar")
         minimize()
     }
 }
