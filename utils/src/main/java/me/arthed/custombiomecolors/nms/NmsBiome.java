@@ -33,6 +33,7 @@ public class NmsBiome {
                 .setSkyColor(ReflectionUtils.getPrivateInteger(biomeFog, "skyColor"))
                 .setFogColor(ReflectionUtils.getPrivateInteger(biomeFog, "fogColor"));
         } catch (NoSuchFieldException exception) {
+            System.err.println("Field not found in BiomeSpecialEffects for 1.21.1: " + exception.getMessage() + ". Possible fields: grassColorOverride, foliageColorOverride, etc.");
             exception.printStackTrace();
         }
         return null;
